@@ -92,7 +92,10 @@ class RegisterController extends Controller
 
     public function publicLink()
     {
-        return asset('/storage/app/public/proof_file' . '/' . Auth::user()->id);
+//      For Production
+//        return asset('/storage/app/public/proof_file' . '/' . Auth::user()->id);
+//      For Development
+        return asset('/storage/proof_file' . '/' . Auth::user()->id);
     }
 
     public function sendThanksForRegister($year)
@@ -106,6 +109,7 @@ class RegisterController extends Controller
                 'name' => $data->name,
                 'year' => $data->year,
                 'webinar_group' => $webinarGroup,
+                'link_zoom' => 'https://us06web.zoom.us/j/81555366542?pwd=bGtlTDhwTEU5eW0wcVdhNUY2UDNLZz09'
             ];
 
             Mail::to($data->email)->send(new ThanksForRegisterNotificationWebinar($emailData));

@@ -30,7 +30,12 @@ class RegisterWebinar extends Model
     public static function participants($year)
     {
 
-        $participants = RegisterWebinar::where(['year' => $year])->orderBy('created_at', 'DESC')->paginate(20)->makeHidden(['user_id']);
+        $participants = RegisterWebinar::where(['year' => $year])
+            ->orderBy('created_at', 'DESC')
+//            only in development mode
+            ->limit(3)
+            ->get()
+            ->makeHidden(['user_id']);
 
         return $participants;
 

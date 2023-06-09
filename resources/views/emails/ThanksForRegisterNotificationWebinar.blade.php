@@ -12,6 +12,10 @@ Pastikan kamu masuk kedalam Grup Webinar Nasional ya!
     Grup Webinar Nasional
 </x-mail::button>
 
+<x-mail::button :url="$emailData['link_zoom']">
+    Link Zoom Webinar Nasional
+</x-mail::button>
+
 Salam Hangat,<br> <br><br>
 {{ config('app.name') }}
 </x-mail::message>

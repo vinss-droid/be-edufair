@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Admin\AdminController;
+use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\UploadController;
 use App\Http\Controllers\API\Webinar\RegisterController as RegisterWebinarController;
 use App\Http\Controllers\API\Workshop\RegisterController as RegisterWorkshopController;
-use App\Http\Controllers\API\UploadController;
-use App\Http\Controllers\API\Admin\AdminController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,11 +41,33 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
     Route::middleware(['auth:sanctum'])->group(function () {
 
 //        Admin Route
-        Route::controller(AdminController::class)->middleware(['auth.admin'])->prefix('/admin')->group(function() {
+        Route::middleware(['auth.admin'])->prefix('/admin')->group(function() {
 
-//          Webinar
-            Route::get('/webinar-participants/{year}', 'participants')->name('admin.webinar.participants');
-            Route::get('/webinar-participant/{year}/{id}', 'participantById')->name('admin.webinar.participantById');
+            Route::controller(AdminController::class)->group(function () {
+    //          Webinar
+                Route::get('/webinar-participants/{year}', 'participants')->name('admin.webinar.participants');
+                Route::get('/webinar-participant/{year}/{id}', 'participantById')->name('admin.webinar.participantById');
+
+    //            Attendance
+
+                Route::get('/attendances/{event}/{year}', 'participantAbsences')->name('admin.attendances');
+
+    //            Attendance Code
+                Route::prefix('/attendance-code')->group(function () {
+
+                    Route::get('/', 'attendanceCode')->name('admin.attendanceCode.index');
+                    Route::delete('/{id}', 'deleteAttendanceCode')->name('admin.attendanceCode.delete');
+                    Route::post('/{year}', 'createAttendanceCode')->name('admin.attendanceCode.create');
+                    Route::put('/change-active-code/{id}', 'changeIsActiveAttendanceCode')->name('admin.attendanceCode.changeIsActive');
+
+                });
+            });
+
+//         Notification
+
+           Route::controller(NotificationController::class)->prefix('/notification')->group(function () {
+               Route::get('/webinar/{year}', 'webinarNotificationLink')->name('notification.webinar.link');
+           });
 
         });
 
@@ -79,6 +102,22 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
             Route::post('/proof-image', 'uploadProofEdufair')->name('upload.proof.image');
 
         });
+
+//        Attendance Route
+        Route::controller(AttendanceController::class)->prefix('/attendance')->group(function() {
+
+            Route::get('/{code}', 'checkParticipantHasAbsent')->name('attendance.check');
+            Route::post('/', 'attendance')->name('attendance.index');
+
+        });
+
+//        Questionnaire Route
+
+//        Route::controller(QuestionnaireController::class)->prefix('/questionnaire')->group(function () {
+//
+//            Route::get('/check/{code}', 'checkAttendanceCode')->name('questionnaire.checkAttendanceCode');
+//
+//        });
 
     });
 

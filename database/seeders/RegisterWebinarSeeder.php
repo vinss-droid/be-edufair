@@ -19,7 +19,7 @@ class RegisterWebinarSeeder extends Seeder
 
         $faker = Faker::create();
 
-        for ($i = 1; $i <= 300; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             RegisterWebinar::create([
                 'user_id' => $faker->uuid(),
                 'year' => '2023',
