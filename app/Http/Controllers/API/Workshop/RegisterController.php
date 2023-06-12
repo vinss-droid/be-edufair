@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\API\Workshop;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ThanksForRegisterNotificationWebinar;
 use App\Models\RegisterWorkshop;
+use App\Models\WebinarSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -53,7 +56,10 @@ class RegisterController extends Controller
             if ($validation->fails()) return response()->json(['errors' => $validation->errors()], 400);
 
             if (RegisterWorkshop::where(['user_id' => Auth::user()->id, 'year' => $year])->count() > 0)
-                return response()->json(['message' => 'you already registered'], 406);
+                return response()->json(['message' => 'you have registered'], 406);
+
+            if (RegisterWorkshop::where('year', $year)->count() > 100)
+                return response()->json(['message' => 'registration is full'], 406);
 
             RegisterWorkshop::create([
                 'user_id' => Auth::user()->id,
@@ -70,6 +76,8 @@ class RegisterController extends Controller
 
             DB::commit();
 
+            $this->sendThanksForRegister($year);
+
             return response()->json(['message' => 'register success!'], 200);
 
         } catch (\Exception) {
@@ -81,6 +89,45 @@ class RegisterController extends Controller
 
     public function publicLink()
     {
+//      For Production
+//        return asset('/storage/app/public/proof_file' . '/' . Auth::user()->id);
+//      For Development
         return asset('/storage/proof_file' . '/' . Auth::user()->id);
+    }
+
+    public function sendThanksForRegister($year)
+    {
+        try {
+
+            $data = RegisterWorkshop::where(['user_id' => Auth::user()->id, 'year' => $year])->first();
+//            $webinarGroup = WebinarSetting::groupLink();
+
+            $emailData = [
+                'name' => $data->name,
+                'year' => $data->year,
+                'workshop_group' => 'https://chat.whatsapp.com/Km8jSlvZw7vGNMb3ZReK0R'
+            ];
+
+//            Mail::to($data->email)->send(new ThanksForRegisterNotificationWebinar($emailData));
+
+            return response()->json(['message' => 'Thank You!'], 200);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request'], 500);
+        }
+    }
+
+    public function totalParticipant($year)
+    {
+
+        try {
+            $participants = RegisterWorkshop::where('year', $year)->count();
+            return response()->json([
+                'total_participant' => $participants
+            ], 200);
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request.'], 500);
+        }
+
     }
 }
