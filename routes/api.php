@@ -90,9 +90,9 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
             Route::controller(RegisterWorkshopController::class)->prefix('/workshop')->group(function () {
 
                 Route::post('/{year}', 'register')->name('register.workshop');
-                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants');
+                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants.workshop');
                 Route::get('/{year}/check', 'check')->name('register.workshop.check');
-                Route::get('/{year}/thanks', 'sendThanksForRegister')->name('register.thanks');
+                Route::get('/{year}/thanks', 'sendThanksForRegister')->name('register.thanks.workshop');
 
             });
 
