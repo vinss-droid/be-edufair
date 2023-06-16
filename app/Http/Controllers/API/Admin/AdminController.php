@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\AttendanceCode;
 use App\Models\RegisterWebinar;
+use App\Models\RegisterWorkshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -64,6 +65,33 @@ class AdminController extends Controller
                             ->paginate(20);
 
             return $attendances;
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request'], 500);
+        }
+
+    }
+    public function participantWorkshops($year)
+    {
+
+        try {
+
+            return RegisterWorkshop::paginate(20);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request'], 500);
+        }
+
+    }
+
+    public function participantWorkshopById($year, $id)
+    {
+
+        try {
+
+            return response()->json([
+                'participant' => RegisterWorkshop::participantByID($year, $id)
+            ]);
 
         } catch (\Exception) {
             return response()->json(['message' => 'failed to processing request'], 500);

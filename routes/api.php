@@ -48,6 +48,10 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
                 Route::get('/webinar-participants/{year}', 'participants')->name('admin.webinar.participants');
                 Route::get('/webinar-participant/{year}/{id}', 'participantById')->name('admin.webinar.participantById');
 
+//              Workshop
+                Route::get('/workshop-participants/{year}', 'participantWorkshops')->name('admin.workshop.participants');
+                Route::get('/workshop-participant/{year}/{id}', 'participantWorkshopById')->name('admin.workshop.participantById');
+
     //            Attendance
 
                 Route::get('/attendances/{event}/{year}', 'participantAbsences')->name('admin.attendances');
