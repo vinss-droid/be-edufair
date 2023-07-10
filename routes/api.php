@@ -45,15 +45,15 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
         Route::middleware(['auth.admin'])->prefix('/admin')->group(function() {
 
             Route::controller(AdminController::class)->group(function () {
-    //          Webinar
+                //          Webinar
                 Route::get('/webinar-participants/{year}', 'participants')->name('admin.webinar.participants');
                 Route::get('/webinar-participant/{year}/{id}', 'participantById')->name('admin.webinar.participantById');
 
-    //            Attendance
+                //            Attendance
 
                 Route::get('/attendances/{event}/{year}', 'participantAbsences')->name('admin.attendances');
 
-    //            Attendance Code
+                //            Attendance Code
                 Route::prefix('/attendance-code')->group(function () {
 
                     Route::get('/', 'attendanceCode')->name('admin.attendanceCode.index');
@@ -66,9 +66,9 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
 
 //         Notification
 
-           Route::controller(NotificationController::class)->prefix('/notification')->group(function () {
-               Route::get('/webinar/{year}', 'webinarNotificationLink')->name('notification.webinar.link');
-           });
+            Route::controller(NotificationController::class)->prefix('/notification')->group(function () {
+                Route::get('/webinar/{year}', 'webinarNotificationLink')->name('notification.webinar.link');
+            });
 
         });
 
@@ -97,7 +97,7 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
 
             });
 
-        // Silogy Route
+            // Silogy Route
 
             Route::controller(RegisterSilogyController::class)->prefix('/silogy')->group(function () {
 
