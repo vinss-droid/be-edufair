@@ -7,6 +7,7 @@ use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\UploadController;
 use App\Http\Controllers\API\Webinar\RegisterController as RegisterWebinarController;
 use App\Http\Controllers\API\Workshop\RegisterController as RegisterWorkshopController;
+use App\Http\Controllers\API\Silogy\RegisterController as RegisterSilogyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -79,9 +80,9 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
             Route::controller(RegisterWebinarController::class)->prefix('/webinar')->group(function () {
 
                 Route::post('/{year}', 'register')->name('register.webinar');
-                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants');
+                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants.webinar');
                 Route::get('/{year}/check', 'check')->name('register.webinar.check');
-                Route::get('/{year}/thanks', 'sendThanksForRegister')->name('register.thanks');
+                Route::get('/{year}/thanks', 'sendThanksForRegister')->name('webinar.register.thanks');
 
             });
 
@@ -90,9 +91,18 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
             Route::controller(RegisterWorkshopController::class)->prefix('/workshop')->group(function () {
 
                 Route::post('/{year}', 'register')->name('register.workshop');
-                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants');
+                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants.workshop');
                 Route::get('/{year}/check', 'check')->name('register.workshop.check');
-                Route::get('/{year}/thanks', 'sendThanksForRegister')->name('register.thanks');
+                Route::get('/{year}/thanks', 'sendThanksForRegister')->name('workshop.register.thanks');
+
+            });
+
+        // Silogy Route
+
+            Route::controller(RegisterSilogyController::class)->prefix('/silogy')->group(function () {
+
+                Route::post('/{year}', 'register')->name('register.silogy');
+                Route::get('/{year}/check', 'check')->name('register.silogy.check');
 
             });
 
