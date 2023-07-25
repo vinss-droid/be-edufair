@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\AttendanceCode;
+use App\Models\RegisterSilogy;
 use App\Models\RegisterWebinar;
 use App\Models\RegisterWorkshop;
 use Illuminate\Http\Request;
@@ -91,6 +92,36 @@ class AdminController extends Controller
 
             return response()->json([
                 'participant' => RegisterWorkshop::participantByID($year, $id)
+            ]);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request'], 500);
+        }
+
+    }
+
+//    Silogy Expo
+
+    public function participantSilogies($year)
+    {
+
+        try {
+
+            return RegisterSilogy::paginate(20);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request'], 500);
+        }
+
+    }
+
+    public function participantSilogiesByID($year, $id)
+    {
+
+        try {
+
+            return response()->json([
+                'participant' => RegisterSilogy::participantByID($year, $id)
             ]);
 
         } catch (\Exception) {

@@ -48,6 +48,9 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
                 //          Webinar
                 Route::get('/webinar-participants/{year}', 'participants')->name('admin.webinar.participants');
                 Route::get('/webinar-participant/{year}/{id}', 'participantById')->name('admin.webinar.participantById');
+                //          Silogy
+                Route::get('/lomba-silogy-participants/{year}', 'participantSilogies')->name('admin.silogy.participants');
+                Route::get('/lomba-silogy-participant/{year}/{id}', 'participantSilogiesByID')->name('admin.silogy.participantById');
 
                 //            Attendance
 
@@ -103,6 +106,7 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
 
                 Route::post('/{year}', 'register')->name('register.silogy');
                 Route::get('/{year}/check', 'check')->name('register.silogy.check');
+                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants.silogy');
 
             });
 

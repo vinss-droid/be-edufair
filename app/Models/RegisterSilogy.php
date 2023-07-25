@@ -29,4 +29,13 @@ class RegisterSilogy extends Model
     protected $hidden = ['created_at', 'updated_at'];
     protected $guarded = 'id';
 
+    public static function participantByID($year, $id)
+    {
+
+        $participant = RegisterSilogy::where(['year' => $year, 'id' => $id])->first()->makeHidden(['user_id']);
+
+        return $participant;
+
+    }
+
 }

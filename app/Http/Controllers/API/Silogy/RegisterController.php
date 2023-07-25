@@ -103,4 +103,18 @@ class RegisterController extends Controller
         return asset('/storage/proof_file' . '/' . Auth::user()->id);
     }
 
+    public function totalParticipant($year)
+    {
+
+        try {
+            $participants = RegisterSilogy::where('year', $year)->count();
+            return response()->json([
+                'total_participant' => $participants
+            ], 200);
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request.'], 500);
+        }
+
+    }
+
 }
