@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\AttendanceCode;
 use App\Models\RegisterSilogy;
+use App\Models\RegisterTalkshow;
 use App\Models\RegisterWebinar;
 use App\Models\RegisterWorkshop;
 use Illuminate\Http\Request;
@@ -122,6 +123,34 @@ class AdminController extends Controller
 
             return response()->json([
                 'participant' => RegisterSilogy::participantByID($year, $id)
+            ]);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request'], 500);
+        }
+
+    }
+
+    public function participantTalkshows($year)
+    {
+
+        try {
+
+            return RegisterTalkshow::paginate(20);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'failed to processing request'], 500);
+        }
+
+    }
+
+    public function participantTalkshowByID($year, $id)
+    {
+
+        try {
+
+            return response()->json([
+                'participant' => RegisterTalkshow::participantByID($year, $id)
             ]);
 
         } catch (\Exception) {

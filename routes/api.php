@@ -8,6 +8,7 @@ use App\Http\Controllers\API\UploadController;
 use App\Http\Controllers\API\Webinar\RegisterController as RegisterWebinarController;
 use App\Http\Controllers\API\Workshop\RegisterController as RegisterWorkshopController;
 use App\Http\Controllers\API\Silogy\RegisterController as RegisterSilogyController;
+use App\Http\Controllers\API\Silogy\Talkshow\RegisterController as RegisterTalkshowController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +52,9 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
                 //          Silogy
                 Route::get('/lomba-silogy-participants/{year}', 'participantSilogies')->name('admin.silogy.participants');
                 Route::get('/lomba-silogy-participant/{year}/{id}', 'participantSilogiesByID')->name('admin.silogy.participantById');
+
+                Route::get('/talkshow-silogy-participants/{year}', 'participantTalkshows')->name('admin.silogy.talkshow.participants');
+                Route::get('/talkshow-silogy-participant/{year}/{id}', 'participantTalkshowByID')->name('admin.silogy.talkshow.participantById');
 
                 //            Attendance
 
@@ -107,6 +111,16 @@ Route::middleware(['auth.apikey'])->prefix('/v1')->group(function() {
                 Route::post('/{year}', 'register')->name('register.silogy');
                 Route::get('/{year}/check', 'check')->name('register.silogy.check');
                 Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants.silogy');
+
+            });
+
+//            Silogy Talkshow
+
+            Route::controller(RegisterTalkshowController::class)->prefix('/talkshow')->group(function () {
+
+                Route::post('/{year}', 'register')->name('register.talkshow');
+                Route::get('/{year}/total-participants', 'totalParticipant')->name('register.total.participants.talkshow');
+                Route::get('/{year}/check', 'check')->name('register.talkshow.check');
 
             });
 
